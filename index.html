@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Debugging Lab - Fix Faulty Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .error {
+            background: #fed7d7;
+            border-left: 4px solid #e53e3e;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .fixed {
+            background: #c6f6d5;
+            border-left: 4px solid #38a169;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        .error-type {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .syntax { background: #e53e3e; color: white; }
+        .runtime { background: #ed8936; color: white; }
+        .logical { background: #ecc94b; color: #333; }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐛 JavaScript Debugging Lab</h1>
+        <p class="subtitle">Identifying and Fixing Syntax, Runtime, and Logical Errors</p>
+
+        <!-- Section 1: Syntax Errors -->
+        <div class="section">
+            <h2>📝 Step 2.1: Syntax Errors <span class="error-type syntax">SYNTAX ERROR</span></h2>
+            <p>Syntax errors occur when the code violates JavaScript language rules.</p>
+            
+            <h3>❌ Faulty Code 1:</h3>
+            <div class="code-block">
+                // Missing closing parenthesis and bracket<br>
+                function greet(name {<br>
+                &nbsp;&nbsp;console.log("Hello, " + name;<br>
+                }<br>
+                greet("John");
+            </div>
+            <button onclick="runSyntaxError()">▶ Run Faulty Code (Will Error)</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Added missing parenthesis and closing bracket<br>
+                function greet(name) {<br>
+                &nbsp;&nbsp;console.log("Hello, " + name);<br>
+                }<br>
+                greet("John");
+            </div>
+            <button onclick="runSyntaxFix()">▶ Run Fixed Code</button>
+
+            <h3>❌ Faulty Code 2:</h3>
+            <div class="code-block">
+                // Missing quotes and comma<br>
+                let colors = [red, green, blue];<br>
+                console.log(colors);
+            </div>
+            <button onclick="runSyntaxError2()">▶ Run Faulty Code (Will Error)</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Added quotes around strings<br>
+                let colors = ["red", "green", "blue"];<br>
+                console.log(colors);
+            </div>
+            <button onclick="runSyntaxFix2()">▶ Run Fixed Code</button>
+            
+            <div id="syntaxOutput" class="output">Output will appear here...</div>
+        </div>
+
+        <!-- Section 2: Runtime Errors -->
+        <div class="section">
+            <h2>⚡ Step 2.2: Runtime Errors <span class="error-type runtime">RUNTIME ERROR</span></h2>
+            <p>Runtime errors occur when the code executes but encounters an issue.</p>
+            
+            <h3>❌ Faulty Code 1:</h3>
+            <div class="code-block">
+                // Accessing undefined variable or property<br>
+                let user = null;<br>
+                console.log(user.name);
+            </div>
+            <button onclick="runRuntimeError()">▶ Run Faulty Code (Will Error)</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Added null check using optional chaining<br>
+                let user = null;<br>
+                console.log(user?.name || "User is null");<br>
+                // Or check before accessing<br>
+                if (user) { console.log(user.name); }<br>
+                else { console.log("User is null"); }
+            </div>
+            <button onclick="runRuntimeFix()">▶ Run Fixed Code</button>
+
+            <h3>❌ Faulty Code 2:</h3>
+            <div class="code-block">
+                // Calling non-existent function<br>
+                calculateTotal(100, 50);
+            </div>
+            <button onclick="runRuntimeError2()">▶ Run Faulty Code (Will Error)</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Define function before calling<br>
+                function calculateTotal(price, discount) {<br>
+                &nbsp;&nbsp;return price - discount;<br>
+                }<br>
+                console.log(calculateTotal(100, 50));
+            </div>
+            <button onclick="runRuntimeFix2()">▶ Run Fixed Code</button>
+            
+            <div id="runtimeOutput" class="output">Output will appear here...</div>
+        </div>
+
+        <!-- Section 3: Logical Errors -->
+        <div class="section">
+            <h2>🧠 Step 3: Logical Errors <span class="error-type logical">LOGICAL ERROR</span></h2>
+            <p>Logical errors occur when code runs but produces incorrect results.</p>
+            
+            <h3>❌ Faulty Code 1:</h3>
+            <div class="code-block">
+                // Incorrect calculation (should be sum, not concatenation)<br>
+                function calculateSum(a, b) {<br>
+                &nbsp;&nbsp;return a + b;<br>
+                }<br>
+                console.log(calculateSum(5, "10"));
+            </div>
+            <button onclick="runLogicalError()">▶ Run Faulty Code</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Convert to numbers before adding<br>
+                function calculateSum(a, b) {<br>
+                &nbsp;&nbsp;return Number(a) + Number(b);<br>
+                }<br>
+                console.log(calculateSum(5, "10"));
+            </div>
+            <button onclick="runLogicalFix()">▶ Run Fixed Code</button>
+
+            <h3>❌ Faulty Code 2:</h3>
+            <div class="code-block">
+                // Wrong condition logic (should check both conditions)<br>
+                let age = 25;<br>
+                let hasLicense = false;<br>
+                if (age >= 18 || hasLicense) {<br>
+                &nbsp;&nbsp;console.log("Can drive");<br>
+                } else {<br>
+                &nbsp;&nbsp;console.log("Cannot drive");<br>
+                }
+            </div>
+            <button onclick="runLogicalError2()">▶ Run Faulty Code</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Use AND (&&) instead of OR (||)<br>
+                let age = 25;<br>
+                let hasLicense = false;<br>
+                if (age >= 18 && hasLicense) {<br>
+                &nbsp;&nbsp;console.log("Can drive");<br>
+                } else {<br>
+                &nbsp;&nbsp;console.log("Cannot drive");<br>
+                }
+            </div>
+            <button onclick="runLogicalFix2()">▶ Run Fixed Code</button>
+
+            <h3>❌ Faulty Code 3: Infinite Loop</h3>
+            <div class="code-block">
+                // Missing increment in loop<br>
+                let i = 0;<br>
+                while (i < 5) {<br>
+                &nbsp;&nbsp;console.log(i);<br>
+                &nbsp;&nbsp;// i++ is missing<br>
+                }
+            </div>
+            <button onclick="runLogicalError3()">▶ Run Faulty Code (Warning: May freeze)</button>
+            
+            <h3>✅ Fixed Code:</h3>
+            <div class="code-block">
+                // Fixed: Added increment<br>
+                let i = 0;<br>
+                while (i < 5) {<br>
+                &nbsp;&nbsp;console.log(i);<br>
+                &nbsp;&nbsp;i++;<br>
+                }
+            </div>
+            <button onclick="runLogicalFix3()">▶ Run Fixed Code</button>
+            
+            <div id="logicalOutput" class="output">Output will appear here...</div>
+        </div>
+
+        <!-- Section 4: Debugging Techniques -->
+        <div class="section">
+            <h2>🔧 Step 4: Debugging Techniques</h2>
+            
+            <h3>Using console.log() for Debugging</h3>
+            <button onclick="demoConsoleDebug()">▶ Run Console Debug Demo</button>
+            
+            <h3>Using console.table() for Arrays</h3>
+            <button onclick="demoConsoleTable()">▶ Run Console Table Demo</button>
+            
+            <h3>Using console.time() for Performance</h3>
+            <button onclick="demoConsoleTime()">▶ Run Performance Test</button>
+            
+            <h3>Using console.trace() for Call Stack</h3>
+            <button onclick="demoConsoleTrace()">▶ Run Trace Demo</button>
+            
+            <div id="debugOutput" class="output">Check browser console (F12) for debug output...</div>
+        </div>
+
+        <!-- Section 5: Comprehensive Fix -->
+        <div class="section">
+            <h2>🎯 Step 5: Comprehensive Debugging Challenge</h2>
+            
+            <h3>❌ Faulty Program:</h3>
+            <div class="code-block">
+                // This program should calculate average of numbers<br>
+                // But it has multiple bugs!<br>
+                <br>
+                function getAverage(numbers) {<br>
+                &nbsp;&nbsp;let sum = 0;<br>
+                &nbsp;&nbsp;for (let i = 0; i &lt;= numbers.length; i++) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;sum += numbers[i];<br>
+                &nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;return sum / numbers.length;<br>
+                }<br>
+                <br>
+                let scores = [85, 90, 78, 92, 88];<br>
+                let average = getAverage(scores);<br>
+                console.log("Average score:", average);
+            </div>
+            <button onclick="runFaultyProgram()">▶ Run Faulty Program</button>
+            
+            <h3>✅ Fixed Program:</h3>
+            <div class="code-block">
+                // Fixed version with proper error handling<br>
+                function getAverage(numbers) {<br>
+                &nbsp;&nbsp;// Check if input is valid<br>
+                &nbsp;&nbsp;if (!Array.isArray(numbers) || numbers.length === 0) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+                &nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;<br>
+                &nbsp;&nbsp;let sum = 0;<br>
+                &nbsp;&nbsp;// Fixed: Use &lt; instead of &lt;=<br>
+                &nbsp;&nbsp;for (let i = 0; i &lt; numbers.length; i++) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// Convert to number in case of strings<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;sum += Number(numbers[i]);<br>
+                &nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;return sum / numbers.length;<br>
+                }<br>
+                <br>
+                let scores = [85, 90, 78, 92, 88];<br>
+                let average = getAverage(scores);<br>
+                console.log("Average score:", average);
+            </div>
+            <button onclick="runFixedProgram()">▶ Run Fixed Program</button>
+            
+            <div id="comprehensiveOutput" class="output">Output will appear here...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
